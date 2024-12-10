@@ -7,6 +7,9 @@ import com.anggiiqna.polafit.network.datamodel.RegisterResponse
 import com.anggiiqna.polafit.network.datamodel.UserResponse
 import com.anggiiqna.polafit.network.datamodel.UserRequest
 import retrofit2.http.Path
+import retrofit2.http.Part
+import retrofit2.http.Multipart
+import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.GET
@@ -22,6 +25,13 @@ interface ApiService {
     @GET("auth/user/{id}")
     suspend fun getUserById(@Path("id") id: String): UserResponse
 
+    @Multipart
     @PUT("auth/user/{id}")
-    suspend fun updateUserProfile(@Path("id") id: String, @Body user: UserRequest): UserRequest
+    suspend fun updateUserProfileWithImage(
+        @Path("id") id: String,
+        @Part username: MultipartBody.Part,
+        @Part email: MultipartBody.Part,
+        @Part phone: MultipartBody.Part,
+        @Part image: MultipartBody.Part
+    ): UserRequest
 }

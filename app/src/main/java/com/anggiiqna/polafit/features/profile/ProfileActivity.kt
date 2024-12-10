@@ -1,6 +1,9 @@
 package com.anggiiqna.polafit.features.profile
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Button
@@ -10,10 +13,15 @@ import androidx.lifecycle.lifecycleScope
 import com.anggiiqna.polafit.R
 import com.anggiiqna.polafit.network.ApiClient
 import com.anggiiqna.polafit.network.ApiService
-import com.anggiiqna.polafit.network.datamodel.UserRequest
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import com.bumptech.glide.request.RequestOptions
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -22,6 +30,10 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
     private lateinit var phoneEditText: EditText
     private lateinit var saveButton: Button
+    private lateinit var profileImageView: ImageView
+    private var selectedImageUri: Uri? = null
+
+    private val pickImageRequestCode = 1000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +44,7 @@ class ProfileActivity : AppCompatActivity() {
         emailEditText = findViewById(R.id.et_email)
         phoneEditText = findViewById(R.id.et_nohanp)
         saveButton = findViewById(R.id.btn_save)
+        profileImageView = findViewById(R.id.profile_image)
 
         apiService = ApiClient.create()
 
@@ -44,12 +57,18 @@ class ProfileActivity : AppCompatActivity() {
             fetchUserProfile(userId)
         }
 
+        profileImageView.setOnClickListener {
+            openGallery()
+        }
+
         saveButton.setOnClickListener {
             val updatedUsername = usernameEditText.text.toString()
             val updatedEmail = emailEditText.text.toString()
             val updatedPhone = phoneEditText.text.toString()
 
-            saveUserProfile(userId, updatedUsername, updatedEmail, updatedPhone)
+            if (selectedImageUri != null) {
+                saveUserProfileWithImage(userId, updatedUsername, updatedEmail, updatedPhone, selectedImageUri!!)
+            }
         }
     }
 
@@ -61,6 +80,10 @@ class ProfileActivity : AppCompatActivity() {
                     usernameEditText.setText(response.username)
                     emailEditText.setText(response.email)
                     phoneEditText.setText(response.phone)
+                    Glide.with(this@ProfileActivity)
+                        .load(response.image)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(profileImageView)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -73,21 +96,62 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUserProfile(userId: String, username: String, email: String, phone: String) {
+    private fun saveUserProfileWithImage(userId: String, username: String, email: String, phone: String, imageUri: Uri) {
+        val file = File(getRealPathFromURI(imageUri))
+        val requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file)
+        val imagePart = MultipartBody.Part.createFormData("image", file.name, requestFile)
+
+        val usernameBody = RequestBody.create(MediaType.parse("text/plain"), username)
+        val emailBody = RequestBody.create(MediaType.parse("text/plain"), email)
+        val phoneBody = RequestBody.create(MediaType.parse("text/plain"), phone)
+
+        val usernamePart = MultipartBody.Part.createFormData("username", null, usernameBody)
+        val emailPart = MultipartBody.Part.createFormData("email", null, emailBody)
+        val phonePart = MultipartBody.Part.createFormData("phone", null, phoneBody)
+
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val userRequest = UserRequest(username, email, phone)
-                val response = apiService.updateUserProfile(userId, userRequest)
+                val response = apiService.updateUserProfileWithImage(
+                    userId, usernamePart, emailPart, phonePart, imagePart
+                )
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@ProfileActivity, "Profile updated!", Toast.LENGTH_SHORT).show()
-                    finish()
+                    if (response != null) {
+                        Toast.makeText(this@ProfileActivity, "Profile updated with image!", Toast.LENGTH_SHORT).show()
+                        finish()
+                    } else {
+                        Toast.makeText(this@ProfileActivity, "Failed to update profile with image", Toast.LENGTH_SHORT).show()
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@ProfileActivity, "Failed to update profile", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ProfileActivity, "Error updating profile", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+    }
+
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, pickImageRequestCode)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == RESULT_OK && requestCode == pickImageRequestCode) {
+            selectedImageUri = data?.data
+            selectedImageUri?.let {
+                profileImageView.setImageURI(it)
+            }
+        }
+    }
+
+    private fun getRealPathFromURI(uri: Uri): String {
+        val cursor = contentResolver.query(uri, null, null, null, null)
+        cursor?.moveToFirst()
+        val index = cursor?.getColumnIndex(MediaStore.Images.Media.DATA)
+        return cursor?.getString(index ?: -1) ?: ""
     }
 }

@@ -14,13 +14,15 @@ import kotlinx.coroutines.withContext
 import com.anggiiqna.polafit.features.profile.ProfileActivity
 import android.widget.ImageView
 import android.content.Intent
-import android.util.Log
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var apiService: ApiService
     private lateinit var namaUser: TextView
     private lateinit var appPreferences: AppPreferences
+    private lateinit var profileImageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +31,8 @@ class HomeActivity : AppCompatActivity() {
         namaUser = findViewById(R.id.namaUser)
         appPreferences = AppPreferences(this)
         apiService = ApiClient.create()
+        profileImageView = findViewById(R.id.potouser)
 
-        val profileImageView: ImageView = findViewById(R.id.potouser)
         val id = intent.getStringExtra("id") ?: ""
 
         profileImageView.setOnClickListener {
@@ -52,6 +54,10 @@ class HomeActivity : AppCompatActivity() {
                 val response: UserResponse = apiService.getUserById(id)
                 withContext(Dispatchers.Main) {
                     namaUser.text = response.username
+                    Glide.with(this@HomeActivity)
+                        .load(response.image)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(profileImageView)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

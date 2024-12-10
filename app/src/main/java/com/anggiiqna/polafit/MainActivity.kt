@@ -12,7 +12,7 @@ import com.anggiiqna.polafit.features.login.LoginActivity
 import com.anggiiqna.polafit.features.register.SignUpActivity
 import com.anggiiqna.polafit.features.scan.ScanActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.anggiiqna.polafit.R.layout.activity_home
+
 
 class MainActivity : AppCompatActivity() {
 

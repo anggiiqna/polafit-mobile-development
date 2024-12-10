@@ -1,9 +1,11 @@
 package com.anggiiqna.polafit.features.register
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.anggiiqna.polafit.features.login.LoginActivity
 import com.anggiiqna.polafit.databinding.ActivitySignupBinding
 import com.anggiiqna.polafit.network.ApiClient
 import com.anggiiqna.polafit.network.ApiService
@@ -26,7 +28,7 @@ class SignUpActivity : AppCompatActivity() {
 
         apiService = ApiClient.create()
 
-        binding.btnSignup.setOnClickListener {
+        binding.btnSignUp.setOnClickListener {
             val name = binding.etName.text.toString()
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
@@ -46,9 +48,15 @@ class SignUpActivity : AppCompatActivity() {
             val user = RegisterRequest(username = name, email = email, password = password)
             val response = apiService.register(user)
             appPreferences.saveToken(response.token)
+            goToLogin()
             Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun goToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 }

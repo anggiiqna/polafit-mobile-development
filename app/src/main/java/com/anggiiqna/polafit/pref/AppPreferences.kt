@@ -13,6 +13,10 @@ class AppPreferences(private val context: Context) {
         edit.apply()
     }
 
+    fun getUserId(id: String): String {
+        return pref.getString("id", "") ?: ""
+    }
+
     fun getToken(): String {
         return pref.getString("token", "") ?: ""
     }

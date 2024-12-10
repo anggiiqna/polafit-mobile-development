@@ -6,5 +6,6 @@ data class LoginResponse(
     @SerializedName("message")
     val message: Boolean,
     @SerializedName("token")
-    val token: String
+    val token: String,
+    val user: UserResponse
 )

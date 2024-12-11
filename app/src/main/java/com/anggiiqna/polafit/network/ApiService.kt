@@ -4,8 +4,8 @@ import com.anggiiqna.polafit.network.datamodel.LoginRequest
 import com.anggiiqna.polafit.network.datamodel.LoginResponse
 import com.anggiiqna.polafit.network.datamodel.RegisterRequest
 import com.anggiiqna.polafit.network.datamodel.RegisterResponse
-import com.anggiiqna.polafit.network.datamodel.UserResponse
 import com.anggiiqna.polafit.network.datamodel.UserRequest
+import com.anggiiqna.polafit.network.datamodel.UserResponse
 import retrofit2.http.Path
 import retrofit2.http.Part
 import retrofit2.http.Multipart
@@ -33,5 +33,14 @@ interface ApiService {
         @Part email: MultipartBody.Part,
         @Part phone: MultipartBody.Part,
         @Part image: MultipartBody.Part
+    ): UserRequest
+
+    @Multipart
+    @PUT("auth/user/{id}")
+    suspend fun updateUserProfileWithoutImage(
+        @Path("id") id: String,
+        @Part username: MultipartBody.Part,
+        @Part email: MultipartBody.Part,
+        @Part phone: MultipartBody.Part,
     ): UserRequest
 }

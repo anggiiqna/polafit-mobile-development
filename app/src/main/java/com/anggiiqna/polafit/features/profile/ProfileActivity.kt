@@ -31,6 +31,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var phoneEditText: EditText
     private lateinit var saveButton: Button
     private lateinit var profileImageView: ImageView
+
     private var selectedImageUri: Uri? = null
 
     private val pickImageRequestCode = 1000
@@ -53,6 +54,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         val userId = intent.getStringExtra("id") ?: ""
+
         if (userId.isNotEmpty()) {
             fetchUserProfile(userId)
         }
@@ -81,7 +83,7 @@ class ProfileActivity : AppCompatActivity() {
                     emailEditText.setText(response.email)
                     phoneEditText.setText(response.phone)
                     Glide.with(this@ProfileActivity)
-                        .load(response.image)
+                        .load(if (response.image.isNullOrEmpty()) R.drawable.noprofile else response.image)
                         .apply(RequestOptions.circleCropTransform())
                         .into(profileImageView)
                 }
@@ -96,11 +98,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUserProfileWithImage(userId: String, username: String, email: String, phone: String, imageUri: Uri) {
-        val file = File(getRealPathFromURI(imageUri))
-        val requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file)
-        val imagePart = MultipartBody.Part.createFormData("image", file.name, requestFile)
-
+    private fun saveUserProfileWithImage(userId: String, username: String, email: String, phone: String, imageUri: Uri?) {
         val usernameBody = RequestBody.create(MediaType.parse("text/plain"), username)
         val emailBody = RequestBody.create(MediaType.parse("text/plain"), email)
         val phoneBody = RequestBody.create(MediaType.parse("text/plain"), phone)
@@ -109,27 +107,55 @@ class ProfileActivity : AppCompatActivity() {
         val emailPart = MultipartBody.Part.createFormData("email", null, emailBody)
         val phonePart = MultipartBody.Part.createFormData("phone", null, phoneBody)
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val response = apiService.updateUserProfileWithImage(
-                    userId, usernamePart, emailPart, phonePart, imagePart
-                )
-                withContext(Dispatchers.Main) {
-                    if (response != null) {
-                        Toast.makeText(this@ProfileActivity, "Profile updated with image!", Toast.LENGTH_SHORT).show()
-                        finish()
-                    } else {
-                        Toast.makeText(this@ProfileActivity, "Failed to update profile with image", Toast.LENGTH_SHORT).show()
+        if (imageUri != null) {
+            val file = File(getRealPathFromURI(imageUri))
+            val requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file)
+            val imagePart = MultipartBody.Part.createFormData("image", file.name, requestFile)
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    val response = apiService.updateUserProfileWithImage(
+                        userId, usernamePart, emailPart, phonePart, imagePart
+                    )
+                    withContext(Dispatchers.Main) {
+                        if (response != null) {
+                            Toast.makeText(this@ProfileActivity, "Profile updated with image!", Toast.LENGTH_SHORT).show()
+                            finish()
+                        } else {
+                            Toast.makeText(this@ProfileActivity, "Failed to update profile with image", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@ProfileActivity, "Error updating profile", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@ProfileActivity, "Error updating profile", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    val response = apiService.updateUserProfileWithoutImage(
+                        userId, usernamePart, emailPart, phonePart
+                    )
+                    withContext(Dispatchers.Main) {
+                        if (response != null) {
+                            Toast.makeText(this@ProfileActivity, "Profile updated without image!", Toast.LENGTH_SHORT).show()
+                            finish()
+                        } else {
+                            Toast.makeText(this@ProfileActivity, "Failed to update profile without image", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@ProfileActivity, "Error updating profile", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
     }
+
 
 
     private fun openGallery() {

@@ -10,6 +10,7 @@ import retrofit2.http.Path
 import retrofit2.http.Part
 import retrofit2.http.Multipart
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.GET
@@ -43,4 +44,10 @@ interface ApiService {
         @Part email: MultipartBody.Part,
         @Part phone: MultipartBody.Part,
     ): UserRequest
+
+    @Multipart
+    @POST("predict_food")
+    suspend fun predictFood(
+        @Part image: MultipartBody.Part
+    ): ResponseBody
 }

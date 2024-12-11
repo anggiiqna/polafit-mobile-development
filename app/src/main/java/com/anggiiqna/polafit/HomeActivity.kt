@@ -32,12 +32,14 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
 
-        namaUser = findViewById(R.id.namaUser)
+        homeBinding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(homeBinding.root)
+
+        namaUser = homeBinding.namaUser
+        profileImageView = homeBinding.potouser
         appPreferences = AppPreferences(this)
         apiService = ApiClient.create()
-        profileImageView = findViewById(R.id.potouser)
 
         val id = intent.getStringExtra("id") ?: ""
 
@@ -46,17 +48,15 @@ class HomeActivity : AppCompatActivity() {
             intent.putExtra("id", id)
             startActivity(intent)
         }
+
         if (id.isNotEmpty()) {
             getUserData(id)
         } else {
             namaUser.text = "User not found"
         }
 
-        homeBinding = ActivityHomeBinding.inflate(layoutInflater)
-//        setContentView(homeBinding.root)
-
+        // Bottom Navigation Listener
         val bottomNavigationView: BottomNavigationView = homeBinding.bottomNavigation
-
         bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
@@ -77,6 +77,7 @@ class HomeActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun getUserData(id: String) {
         lifecycleScope.launch(Dispatchers.IO) {

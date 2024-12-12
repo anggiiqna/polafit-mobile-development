@@ -11,3 +11,4 @@ class ExerciseRequest(
     val kategori: String,
     val jenis_kelamin: String
 )
+

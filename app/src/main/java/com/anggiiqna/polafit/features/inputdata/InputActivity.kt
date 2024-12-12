@@ -98,8 +98,6 @@ class InputActivity : AppCompatActivity() {
         }
     }
 
-
-
     private fun sendExerciseRecommendationRequest(request: ExerciseRequest) {
         // Show loading indicator before API call
         val progressDialog = ProgressDialog(this)
@@ -110,6 +108,7 @@ class InputActivity : AppCompatActivity() {
             try {
                 val response = apiService.getExerciseRecommendation(request)
                 val recomendation = response.recommendations
+
                 progressDialog.dismiss()
                 goToResult(recomendation)
             } catch (ex: Exception) {

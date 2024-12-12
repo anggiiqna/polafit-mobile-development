@@ -2,13 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg2">
 
     <!-- Profile Image -->
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/icon_back"
             android:layout_width="24dp"
@@ -23,14 +25,30 @@
             android:id="@+id/tv_profile_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="Recomendation Result"
             android:textColor="#000000"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"/>
+            android:textStyle="bold" />
     </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="300dp"
+        android:layout_height="180dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp">
+
+        <ImageView
+            android:id="@+id/tv_exercise_rexomendation_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ex_senam" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/tv_exercise_rexomendation"
@@ -43,5 +61,19 @@
         android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/exercise_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="320dp"
+        android:lineSpacingExtra="4dp"
+        android:padding="16dp"
+        android:text="Ini adalah paragraf contoh yang digunakan untuk menampilkan banyak teks di dalam TextView. Anda bisa menambahkan teks yang panjang di sini, dan teks akan otomatis turun ke baris berikutnya jika melebihi panjang layar."
+        android:textColor="#000"
+        android:textSize="14sp" />
+
 
 </RelativeLayout>

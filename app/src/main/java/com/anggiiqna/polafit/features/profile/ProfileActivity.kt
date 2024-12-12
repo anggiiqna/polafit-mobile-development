@@ -22,6 +22,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 import com.bumptech.glide.request.RequestOptions
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -99,9 +100,9 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun saveUserProfileWithImage(userId: String, username: String, email: String, phone: String, imageUri: Uri?) {
-        val usernameBody = RequestBody.create(MediaType.parse("text/plain"), username)
-        val emailBody = RequestBody.create(MediaType.parse("text/plain"), email)
-        val phoneBody = RequestBody.create(MediaType.parse("text/plain"), phone)
+        val usernameBody = RequestBody.create("text/plain".toMediaTypeOrNull(), username)
+        val emailBody = RequestBody.create("text/plain".toMediaTypeOrNull(), email)
+        val phoneBody = RequestBody.create("text/plain".toMediaTypeOrNull(), phone)
 
         val usernamePart = MultipartBody.Part.createFormData("username", null, usernameBody)
         val emailPart = MultipartBody.Part.createFormData("email", null, emailBody)
@@ -109,7 +110,7 @@ class ProfileActivity : AppCompatActivity() {
 
         if (imageUri != null) {
             val file = File(getRealPathFromURI(imageUri))
-            val requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file)
+            val requestFile = RequestBody.create("image/jpeg".toMediaTypeOrNull(), file)
             val imagePart = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
             lifecycleScope.launch(Dispatchers.IO) {

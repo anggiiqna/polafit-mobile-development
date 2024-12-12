@@ -12,6 +12,7 @@ import retrofit2.http.Path
 import retrofit2.http.Part
 import retrofit2.http.Multipart
 import okhttp3.MultipartBody
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.GET
@@ -48,4 +49,10 @@ interface ApiService {
 
     @POST("/predict_exercise")
     suspend fun getExerciseRecommendation(@Body request: ExerciseRequest): ExerciseResponse
+
+    @POST("/predict_food")
+    @Multipart
+    suspend fun predictFood(
+        @Part file: MultipartBody.Part
+    ): Response<ScanResponse>
 }

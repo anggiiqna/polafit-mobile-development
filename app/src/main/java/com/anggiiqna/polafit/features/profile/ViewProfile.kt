@@ -8,7 +8,9 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.anggiiqna.polafit.features.login.LoginActivity
 import androidx.lifecycle.lifecycleScope
+import com.anggiiqna.polafit.HomeActivity
 import com.anggiiqna.polafit.R
+import com.anggiiqna.polafit.features.history.HistoryActivity
 import com.anggiiqna.polafit.network.ApiClient
 import com.anggiiqna.polafit.network.ApiService
 import com.bumptech.glide.Glide
@@ -25,6 +27,8 @@ class ViewProfile : AppCompatActivity() {
     private lateinit var email: TextView
     private lateinit var phone: TextView
     private lateinit var image: ImageView
+    private lateinit var FoodHistory: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +40,20 @@ class ViewProfile : AppCompatActivity() {
         email = findViewById(R.id.tv_email)
         phone = findViewById(R.id.tv_phone)
         image = findViewById(R.id.profile_image)
+        FoodHistory = findViewById(R.id.historyfood)
+
+        FoodHistory.setOnClickListener {
+            val intent = Intent(this@ViewProfile, HistoryActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         apiService = ApiClient.create()
 
         val backButton: ImageView = findViewById(R.id.icon_back)
         backButton.setOnClickListener {
+            val intent = Intent(this@ViewProfile, HomeActivity::class.java)
+            startActivity(intent)
             finish()
         }
 

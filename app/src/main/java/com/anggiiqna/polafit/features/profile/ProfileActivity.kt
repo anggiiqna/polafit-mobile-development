@@ -7,6 +7,7 @@ import android.provider.MediaStore
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +24,8 @@ import okhttp3.RequestBody
 import java.io.File
 import com.bumptech.glide.request.RequestOptions
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -42,6 +45,7 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_editprofile)
 
         val backButton: ImageView = findViewById(R.id.icon_back)
+
         usernameEditText = findViewById(R.id.et_username)
         emailEditText = findViewById(R.id.et_email)
         phoneEditText = findViewById(R.id.et_nohanp)
@@ -100,9 +104,9 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun saveUserProfileWithImage(userId: String, username: String, email: String, phone: String, imageUri: Uri?) {
-        val usernameBody = RequestBody.create("text/plain".toMediaTypeOrNull(), username)
-        val emailBody = RequestBody.create("text/plain".toMediaTypeOrNull(), email)
-        val phoneBody = RequestBody.create("text/plain".toMediaTypeOrNull(), phone)
+        val usernameBody = username.toRequestBody("text/plain".toMediaTypeOrNull())
+        val emailBody = email.toRequestBody("text/plain".toMediaTypeOrNull())
+        val phoneBody = phone.toRequestBody("text/plain".toMediaTypeOrNull())
 
         val usernamePart = MultipartBody.Part.createFormData("username", null, usernameBody)
         val emailPart = MultipartBody.Part.createFormData("email", null, emailBody)
@@ -110,7 +114,7 @@ class ProfileActivity : AppCompatActivity() {
 
         if (imageUri != null) {
             val file = File(getRealPathFromURI(imageUri))
-            val requestFile = RequestBody.create("image/jpeg".toMediaTypeOrNull(), file)
+            val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
             val imagePart = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
             lifecycleScope.launch(Dispatchers.IO) {

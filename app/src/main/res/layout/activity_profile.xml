@@ -116,8 +116,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#E0E0E0"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"/>
 
             <!-- About App -->
             <TextView
@@ -125,6 +125,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="About App"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:padding="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onAboutAppClicked"/>
+
+            <!-- About App -->
+            <TextView
+                android:id="@+id/historyfood"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="History Food"
                 android:textSize="16sp"
                 android:textColor="#000000"
                 android:padding="8dp"

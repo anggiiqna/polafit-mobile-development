@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.cardview)
 
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation(libs.androidx.recyclerview)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

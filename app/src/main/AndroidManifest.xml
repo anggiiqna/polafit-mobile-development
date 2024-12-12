@@ -23,17 +23,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Polafit"
         tools:targetApi="31">
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Polafit">
+        <!-- Main Activities -->
+        <activity android:name=".MainActivity" android:exported="true" android:label="@string/app_name" android:theme="@style/Theme.Polafit">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".features.history.HistoryActivity" android:exported="true"/>
+
+        <activity
+            android:name=".features.history.HistoryFoodActivity"
+            android:exported="true"/>
 
         <activity
             android:name=".features.login.LoginActivity"

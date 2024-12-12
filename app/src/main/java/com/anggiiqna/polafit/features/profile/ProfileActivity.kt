@@ -7,7 +7,6 @@ import android.provider.MediaStore
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -18,9 +17,7 @@ import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import java.io.File
 import com.bumptech.glide.request.RequestOptions
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -160,8 +157,6 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
     }
-
-
 
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)

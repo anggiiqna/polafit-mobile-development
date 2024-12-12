@@ -74,6 +74,7 @@ class HomeActivity : AppCompatActivity() {
                 }
                 R.id.nav_scan -> {
                     val intent = Intent(this, ScanActivity::class.java)
+                    intent.putExtra("id", id)
                     startActivity(intent)
                     true
                 }

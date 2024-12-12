@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ADD6EA"> <!-- Background Biru -->
+    android:background="#ADD6EA">
 
     <!-- Logo ImageView -->
     <ImageView
@@ -11,57 +11,59 @@
         android:layout_height="150dp"
         android:src="@drawable/logo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"/>
+        android:layout_marginTop="70dp" />
 
-
-    <!-- Email Input Field -->
+    <!-- Username Label -->
     <TextView
         android:id="@+id/tv_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="300dp"
         android:text="@string/username"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         android:textSize="14sp" />
 
+    <!-- Username Input -->
     <EditText
         android:id="@+id/et_username"
         android:layout_width="310dp"
         android:layout_height="60dp"
+        android:layout_below="@id/tv_email"
+        android:layout_alignStart="@id/tv_email"
+        android:layout_marginTop="8dp"
         android:hint="@string/enter_your_username_here"
         android:textColorHint="#AAAAAA"
-        android:layout_below="@id/tv_email"
-        android:layout_marginTop="8dp"
         android:textSize="14sp"
-        android:layout_centerHorizontal="true"
+        android:textColor="#000000"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:background="@drawable/edittext_background"/>
+        android:background="@drawable/edittext_background" />
 
     <!-- Password Label -->
     <TextView
         android:id="@+id/tv_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/password"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
         android:layout_below="@id/et_username"
         android:layout_marginTop="24dp"
-        android:layout_marginStart="60dp" />
+        android:layout_alignStart="@id/tv_email"
+        android:text="@string/password"
+        android:textColor="#000000"
+        android:textSize="14sp" />
 
-    <!-- Password Input Field -->
+    <!-- Password Input -->
     <EditText
         android:id="@+id/et_password"
         android:layout_width="310dp"
         android:layout_height="60dp"
+        android:layout_below="@id/tv_password"
+        android:layout_alignStart="@id/tv_password"
+        android:layout_marginTop="8dp"
         android:hint="@string/enter_your_password_here"
         android:textColorHint="#AAAAAA"
-        android:layout_below="@id/tv_password"
-        android:layout_marginTop="8dp"
+        android:textColor="#000000"
         android:textSize="14sp"
-        android:layout_centerHorizontal="true"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:background="@drawable/edittext_background"
@@ -73,12 +75,10 @@
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:text="@string/log_in"
-        android:textColor="#000000"
+        android:textColor="#ffffff"
         android:layout_below="@id/et_password"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
-        android:background="@drawable/rounded_blue2_button"/>
-
-    <!-- Or Text -->
+        android:background="@drawable/rounded_blue2_button" />
 
 </RelativeLayout>

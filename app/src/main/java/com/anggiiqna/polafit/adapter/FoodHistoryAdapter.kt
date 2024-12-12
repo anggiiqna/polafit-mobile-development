@@ -7,12 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.anggiiqna.polafit.R
-import com.anggiiqna.polafit.network.ScanResponse
 import com.anggiiqna.polafit.network.datamodel.FoodItem
+import com.bumptech.glide.Glide
 
 class FoodHistoryAdapter(private val foodItems: List<FoodItem>, private val onItemClick: (FoodItem) -> Unit) :
     RecyclerView.Adapter<FoodHistoryAdapter.FoodViewHolder>() {
-
 
     class FoodViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val foodImage: ImageView = itemView.findViewById(R.id.food_image)
@@ -38,9 +37,11 @@ class FoodHistoryAdapter(private val foodItems: List<FoodItem>, private val onIt
         holder.protein.text = item.protein
         holder.sugar.text = item.sugar
         holder.fiber.text = item.fiber
-        holder.foodImage.setImageResource(item.imageResource)
 
-        // Set click listener for the item
+        Glide.with(holder.itemView.context)
+            .load(item.imageResource)
+            .into(holder.foodImage)
+
         holder.itemView.setOnClickListener {
             onItemClick(item)
         }

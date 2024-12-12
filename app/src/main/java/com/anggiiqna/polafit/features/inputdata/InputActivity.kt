@@ -99,7 +99,6 @@ class InputActivity : AppCompatActivity() {
     }
 
     private fun sendExerciseRecommendationRequest(request: ExerciseRequest) {
-        // Show loading indicator before API call
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage("Loading...")
         progressDialog.setCancelable(false)

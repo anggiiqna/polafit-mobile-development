@@ -8,10 +8,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.anggiiqna.polafit.R
 import com.anggiiqna.polafit.adapter.FoodHistoryAdapter
-import com.anggiiqna.polafit.features.profile.ProfileActivity
 import com.anggiiqna.polafit.features.profile.ViewProfile
+import com.anggiiqna.polafit.network.ApiClient
 import com.anggiiqna.polafit.network.datamodel.FoodItem
-
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class HistoryActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -21,7 +26,6 @@ class HistoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_history)
 
-        // Initialize RecyclerView
         recyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -33,103 +37,51 @@ class HistoryActivity : AppCompatActivity() {
             finish()
         }
 
-        // Sample data - replace with your actual data source
-        val foodItems = listOf(
-            FoodItem(
-                "Beef Steaks",
-                "16-11-2024",
-                "615",
-                "2.6",
-                "0.0",
-                "0.0",
-                R.drawable.food
-            ),
-            FoodItem(
-                "Beef Steaks",
-                "16-11-2024",
-                "615",
-                "2.6",
-                "0.0",
-                "0.0",
-                R.drawable.food
-            ),
-            FoodItem(
-                "Beef Steaks",
-                "16-11-2024",
-                "615",
-                "2.6",
-                "0.0",
-                "0.0",
-                R.drawable.food
-            ),
-            FoodItem(
-                "Beef Steaks",
-                "16-11-2024",
-                "615",
-                "2.6",
-                "0.0",
-                "0.0",
-                R.drawable.food
-            ),
-            FoodItem(
-                "Beef Steaks",
-                "16-11-2024",
-                "615",
-                "2.6",
-                "0.0",
-                "0.0",
-                R.drawable.food
-            ),
-            FoodItem(
-                "Beef Steaks",
-                "16-11-2024",
-                "615",
-                "2.6",
-                "0.0",
-                "0.0",
-                R.drawable.food
-            ),
-            FoodItem(
-                "Beef Steaks",
-                "16-11-2024",
-                "615",
-                "2.6",
-                "0.0",
-                "0.0",
-                R.drawable.food
-            ),
-            FoodItem(
-                "Beef Steaks",
-                "16-11-2024",
-                "615",
-                "2.6",
-                "0.0",
-                "0.0",
-                R.drawable.food
-            )
+        val userId = 3
 
-            // Add more items as needed
-        )
+        fetchFoodHistory(userId)
+    }
 
-        // Initialize and set adapter
-        adapter = FoodHistoryAdapter(foodItems) { foodItem ->
-            // Handle item click: navigate to HistoryDetailActivity
-            val intent = Intent(this, HistoryFoodActivity::class.java).apply {
-                putExtra("FOOD_NAME", foodItem.name)
-                putExtra("FOOD_DATE", foodItem.date)
-                putExtra("FOOD_CALORIES", foodItem.calories)
-                putExtra("FOOD_PROTEIN", foodItem.protein)
-                putExtra("FOOD_CARBS", foodItem.sugar)
-                putExtra("FOOD_FAT", foodItem.fiber)
+    private fun fetchFoodHistory(userId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = ApiClient.create().getHistoryByUserId(userId.toString())
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val outputDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+
+                val foodItems = response.map {
+                    val createdAtDate = dateFormat.parse(it.createdAt)
+                    val formattedDate = createdAtDate?.let { outputDateFormat.format(it) } ?: ""
+
+                    FoodItem(
+                        name = it.foodName,
+                        date = formattedDate,
+                        calories = "${it.calories} Kcal",
+                        protein = "${it.protein} Gram",
+                        sugar = "${it.sugar} Gram",
+                        fiber = "${it.fiber} Gram",
+                        imageResource = it.image
+                    )
+                }
+
+                withContext(Dispatchers.Main) {
+                    adapter = FoodHistoryAdapter(foodItems) { foodItem ->
+                        val intent = Intent(this@HistoryActivity, HistoryFoodActivity::class.java).apply {
+                            putExtra("FOOD_NAME", foodItem.name)
+                            putExtra("FOOD_DATE", foodItem.date)
+                            putExtra("FOOD_CALORIES", foodItem.calories)
+                            putExtra("FOOD_PROTEIN", foodItem.protein)
+                            putExtra("FOOD_CARBS", foodItem.sugar)
+                            putExtra("FOOD_FAT", foodItem.fiber)
+                            putExtra("FOOD_IMAGE", foodItem.imageResource)
+                        }
+                        startActivity(intent)
+                    }
+                    recyclerView.adapter = adapter
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-            startActivity(intent)
         }
-        recyclerView.adapter = adapter
-//
-//        // Set up back button click listener
-//        findViewById<ImageView>(R.id.icon_back).setOnClickListener {
-//            onBackPressed()
-//        }
     }
 }
-

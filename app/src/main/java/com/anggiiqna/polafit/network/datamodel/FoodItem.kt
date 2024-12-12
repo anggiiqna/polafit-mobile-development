@@ -7,5 +7,5 @@ data class FoodItem(
     val protein: String,
     val sugar: String,
     val fiber: String,
-    val imageResource: Int
+    val imageResource: String
 )

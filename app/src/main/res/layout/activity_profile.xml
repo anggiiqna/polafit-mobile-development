@@ -94,7 +94,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_white"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="10dp">
 
             <!-- Edit Profile -->
             <TextView
@@ -134,7 +134,14 @@
                 android:focusable="true"
                 android:onClick="onAboutAppClicked"/>
 
-            <!-- About App -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E0E0"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"/>
+
+            <!-- History Food -->
             <TextView
                 android:id="@+id/historyfood"
                 android:layout_width="match_parent"

@@ -2,6 +2,8 @@ package com.anggiiqna.polafit.network
 
 import com.anggiiqna.polafit.network.datamodel.ExerciseRequest
 import com.anggiiqna.polafit.network.datamodel.ExerciseResponse
+import com.anggiiqna.polafit.network.datamodel.HistoryRequest
+import com.anggiiqna.polafit.network.datamodel.HistoryResponse
 import com.anggiiqna.polafit.network.datamodel.LoginRequest
 import com.anggiiqna.polafit.network.datamodel.LoginResponse
 import com.anggiiqna.polafit.network.datamodel.RegisterRequest
@@ -12,6 +14,7 @@ import retrofit2.http.Path
 import retrofit2.http.Part
 import retrofit2.http.Multipart
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -55,4 +58,22 @@ interface ApiService {
     suspend fun predictFood(
         @Part file: MultipartBody.Part
     ): Response<ScanResponse>
+
+    @Multipart
+    @POST("/food-history")
+    suspend fun storeFoodHistory(
+        @Part("userId") userId: RequestBody,
+        @Part("foodName") foodName: RequestBody,
+        @Part("serving") serving: RequestBody,
+        @Part("calories") calories: RequestBody,
+        @Part("protein") protein: RequestBody,
+        @Part("fat") fat: RequestBody,
+        @Part("carbs") carbs: RequestBody,
+        @Part("fiber") fiber: RequestBody,
+        @Part("sugar") sugar: RequestBody,
+        @Part image: MultipartBody.Part?
+    ): HistoryResponse
+
+    @GET("food-history/{id}")
+    suspend fun getHistoryByUserId(@Path("id") userId: String): List<HistoryResponse>
 }

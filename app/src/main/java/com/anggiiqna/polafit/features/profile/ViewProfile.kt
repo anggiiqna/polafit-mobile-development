@@ -42,8 +42,11 @@ class ViewProfile : AppCompatActivity() {
         image = findViewById(R.id.profile_image)
         FoodHistory = findViewById(R.id.historyfood)
 
+        val userId = intent.getStringExtra("id") ?: ""
+
         FoodHistory.setOnClickListener {
             val intent = Intent(this@ViewProfile, HistoryActivity::class.java)
+            intent.putExtra("id", userId)
             startActivity(intent)
             finish()
         }
@@ -57,7 +60,6 @@ class ViewProfile : AppCompatActivity() {
             finish()
         }
 
-        val userId = intent.getStringExtra("id") ?: ""
         editProfileView.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
             intent.putExtra("id", userId)

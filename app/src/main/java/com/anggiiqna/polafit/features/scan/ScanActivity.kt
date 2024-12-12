@@ -51,10 +51,8 @@ class ScanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan)
 
-        // Initialize Retrofit API service
         apiService = ApiClient.createML()
 
-        // Initialize views
         foodImageView = findViewById(R.id.food_image)
         val btnTakePicture: ImageButton = findViewById(R.id.btnTakePicture)
         val btnOpenFile: ImageButton = findViewById(R.id.btnOpenFile)
@@ -135,10 +133,8 @@ class ScanActivity : AppCompatActivity() {
 
     private fun createImageFile(): File {
         val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-        // Use getExternalFilesDir() to ensure the directory exists and is accessible
         val storageDir = File(getExternalFilesDir(null), "my_images")
 
-        // Create the directory if it doesn't exist
         if (!storageDir.exists()) {
             storageDir.mkdirs()
         }
@@ -148,7 +144,6 @@ class ScanActivity : AppCompatActivity() {
             ".jpg",
             storageDir
         ).apply {
-            // Ensure the file is readable
             setReadable(true, false)
         }
     }
@@ -164,7 +159,6 @@ class ScanActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 REQUEST_CAMERA -> {
-                    // Use photoUri that was set during camera intent
                     if (photoUri != null) {
                         try {
                             Log.d("ScanActivity", "Camera URI: $photoUri")
@@ -211,7 +205,6 @@ class ScanActivity : AppCompatActivity() {
         if (!file.exists()) {
             Log.e("ScanActivity", "File does not exist: $filePath")
 
-            // Additional debugging - list files in the directory
             val parentDir = file.parentFile
             if (parentDir?.exists() == true) {
                 Log.d("ScanActivity", "Files in directory:")
@@ -224,7 +217,6 @@ class ScanActivity : AppCompatActivity() {
             return
         }
 
-        // Show loading indicator before API call
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage("Uploading image...")
         progressDialog.setCancelable(false)
@@ -240,8 +232,9 @@ class ScanActivity : AppCompatActivity() {
                     progressDialog.dismiss()
                     if (response.isSuccessful) {
                         val predictionResult = response.body()
+                        val id = intent.getStringExtra("id") ?: ""
                         val resultIntent = Intent(this@ScanActivity, ScanResultActivity::class.java)
-
+                        resultIntent.putExtra("id", id)
                         resultIntent.putExtra("ID", predictionResult?.ID)
                         resultIntent.putExtra("Makanan", predictionResult?.Makanan)
                         resultIntent.putExtra("Berat_per_Serving", predictionResult?.Berat_per_Serving)
@@ -272,11 +265,9 @@ class ScanActivity : AppCompatActivity() {
     }
 
     private fun getRealPathFromURI(uri: Uri): String {
-        // For camera captures, prioritize the exact path
         val path = uri.path ?: ""
         Log.d("ScanActivity", "Attempting to get path: $path")
 
-        // If the path starts with /my_images, try to find the full absolute path
         if (path.contains("/my_images/")) {
             val fileName = path.substringAfterLast("/")
             val storageDir = File(getExternalFilesDir(null), "my_images")
@@ -288,7 +279,6 @@ class ScanActivity : AppCompatActivity() {
             return file.absolutePath
         }
 
-        // Fallback to content resolver method
         try {
             val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
             val cursor = contentResolver.query(uri, filePathColumn, null, null, null)
@@ -302,7 +292,6 @@ class ScanActivity : AppCompatActivity() {
             Log.e("ScanActivity", "Error getting path from URI", e)
         }
 
-        // If all else fails, return the original path
         return path
     }
 }

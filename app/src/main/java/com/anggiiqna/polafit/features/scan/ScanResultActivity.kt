@@ -1,18 +1,29 @@
 package com.anggiiqna.polafit.features.scan
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.anggiiqna.polafit.R
 import com.anggiiqna.polafit.features.history.HistoryActivity
-import com.anggiiqna.polafit.features.history.HistoryFoodActivity
+import com.anggiiqna.polafit.network.ApiClient
+import com.anggiiqna.polafit.network.ApiService
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
+import java.io.InputStream
 
 class ScanResultActivity : AppCompatActivity() {
+    private lateinit var apiService: ApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,54 +42,104 @@ class ScanResultActivity : AppCompatActivity() {
         val saveButton: Button = findViewById(R.id.btnResult)
 
         backButton.setOnClickListener {
-            val intent = Intent(this@ScanResultActivity, ScanActivity::class.java)
+            val intent = Intent(this@ScanResultActivity, HistoryActivity::class.java)
             startActivity(intent)
             finish()
         }
 
         val foodName = intent.getStringExtra("Makanan")
-        val servingSize = "${intent.getStringExtra("Berat_per_Serving") ?: ""} Gram"
-        val calories = "${intent.getStringExtra("Kalori") ?: ""} Kcal"
-        val protein = "${intent.getStringExtra("Protein") ?: ""} Gram"
-        val fat = "${intent.getStringExtra("Lemak") ?: ""} Gram"
-        val carbo = "${intent.getStringExtra("Karbohidrat") ?: ""} Gram"
-        val fiber = "${intent.getStringExtra("Serat") ?: ""} Gram"
-        val sugar = "${intent.getStringExtra("Gula") ?: ""} Gram"
-
+        val servingSizeValue = intent.getStringExtra("Berat_per_Serving") ?: ""
+        val caloriesValue = intent.getStringExtra("Kalori") ?: ""
+        val proteinValue = intent.getStringExtra("Protein") ?: ""
+        val fatValue = intent.getStringExtra("Lemak") ?: ""
+        val carboValue = intent.getStringExtra("Karbohidrat") ?: ""
+        val fiberValue = intent.getStringExtra("Serat") ?: ""
+        val sugarValue = intent.getStringExtra("Gula") ?: ""
         val imageUriString = intent.getStringExtra("ImageUri")
 
-
-
-        // Set the name to the TextView
         nameFoodResultTextView.text = foodName
-        servingSizeResultTextView.text = servingSize
-        caloriesTextView.text = calories
-        proteinTextView.text = protein
-        fatTextView.text = fat
-        carboTextView.text = carbo
-        fiberTextView.text = fiber
-        sugarTextView.text = sugar
-
+        servingSizeResultTextView.text = "$servingSizeValue Gram"
+        caloriesTextView.text = "$caloriesValue Kcal"
+        proteinTextView.text = "$proteinValue Gram"
+        fatTextView.text = "$fatValue Gram"
+        carboTextView.text = "$carboValue Gram"
+        fiberTextView.text = "$fiberValue Gram"
+        sugarTextView.text = "$sugarValue Gram"
 
         imageUriString?.let { uriString ->
             val imageUri = Uri.parse(uriString)
             foodImageView.setImageURI(imageUri)
         }
 
-        // Handle save button click
         saveButton.setOnClickListener {
-            val intent = Intent(this, HistoryActivity::class.java).apply {
-                putExtra("FOOD_NAME", foodName)
-                putExtra("FOOD_DATE", "12-12-2024") // Example date, you can use dynamic data
-                putExtra("FOOD_CALORIES", calories)
-                putExtra("FOOD_PROTEIN", protein)
-                putExtra("FOOD_CARBS", carbo)
-                putExtra("FOOD_FAT", fat)
-                putExtra("FOOD_IMAGE", imageUriString)
+            val userId = intent.getStringExtra("id") ?: ""
+
+//            val progressDialog = ProgressDialog(this)
+//            progressDialog.setMessage("Saving History...")
+//            progressDialog.setCancelable(false)
+//            progressDialog.show()
+
+            val foodNamePart = RequestBody.create(MultipartBody.FORM, foodName ?: "")
+            val servingPart = RequestBody.create(MultipartBody.FORM, servingSizeValue ?: "")
+            val caloriesPart = RequestBody.create(MultipartBody.FORM, caloriesValue ?: "")
+            val proteinPart = RequestBody.create(MultipartBody.FORM, proteinValue ?: "")
+            val fatPart = RequestBody.create(MultipartBody.FORM, fatValue ?: "")
+            val carboPart = RequestBody.create(MultipartBody.FORM, carboValue ?: "")
+            val fiberPart = RequestBody.create(MultipartBody.FORM, fiberValue ?: "")
+            val sugarPart = RequestBody.create(MultipartBody.FORM, sugarValue ?: "")
+
+            val imageUri = Uri.parse(imageUriString)
+            val imageFile = imageUri?.let {
+                getFileFromUri(it)
             }
-            startActivity(intent)
+            val imagePart = imageFile?.let {
+                val requestBody = it.asRequestBody("image/*".toMediaTypeOrNull())
+                MultipartBody.Part.createFormData("image", it.name, requestBody)
+            }
+
+            sendFoodHistory(userId, foodNamePart, servingPart, caloriesPart, proteinPart, fatPart, carboPart, fiberPart, sugarPart, imagePart)
+//            progressDialog.dismiss()
+//            val intent = Intent(this@ScanResultActivity, HistoryActivity::class.java)
+//            startActivity(intent)
+//            finish()
+        }
+    }
+
+    private fun getFileFromUri(uri: Uri): File? {
+        val inputStream: InputStream? = contentResolver.openInputStream(uri)
+        val file = File(filesDir, uri.lastPathSegment ?: "temp_image")
+        inputStream?.use { input ->
+            file.outputStream().use { output ->
+                input.copyTo(output)
+            }
+        }
+        return file.takeIf { it.exists() }
+    }
+
+    private fun sendFoodHistory(
+        userId: String,
+        foodName: RequestBody,
+        serving: RequestBody,
+        calories: RequestBody,
+        protein: RequestBody,
+        fat: RequestBody,
+        carbs: RequestBody,
+        fiber: RequestBody,
+        sugar: RequestBody,
+        image: MultipartBody.Part?
+    ) {
+        apiService = ApiClient.create()
+
+        lifecycleScope.launch {
+            try {
+                val response = apiService.storeFoodHistory(
+                    RequestBody.create(MultipartBody.FORM, userId),
+                    foodName, serving, calories, protein, fat, carbs, fiber, sugar, image ?: MultipartBody.Part.createFormData("image", "")
+                )
+
+            } catch (e: Exception) {
+                Log.e("FoodHistory", "Exception: ${e.message}")
+            }
         }
     }
 }
-
-

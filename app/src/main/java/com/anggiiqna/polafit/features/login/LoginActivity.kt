@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginWithUsername(username: String, password: String) {
         val progressDialog = ProgressDialog(this)
-        progressDialog.setMessage("Uploading image...")
+        progressDialog.setMessage("Loading...")
         progressDialog.setCancelable(false)
         progressDialog.show()
         lifecycleScope.launch {

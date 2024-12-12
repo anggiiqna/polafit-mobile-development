@@ -46,7 +46,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private suspend fun registerUser(name: String, email: String, password: String) {
         val progressDialog = ProgressDialog(this)
-        progressDialog.setMessage("Uploading image...")
+        progressDialog.setMessage("Loading...")
         progressDialog.setCancelable(false)
         progressDialog.show()
         try {

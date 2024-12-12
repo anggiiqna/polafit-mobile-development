@@ -19,8 +19,13 @@ import com.anggiiqna.polafit.databinding.ActivityHomeBinding
 import com.anggiiqna.polafit.features.scan.ScanActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.anggiiqna.polafit.features.inputdata.InputActivity
 import com.anggiiqna.polafit.network.datamodel.UserResponse
+import com.anggiiqna.polafit.features.adapter.FoodAdapter
+import com.anggiiqna.polafit.features.adapter.ExerciseAdapter
+
 
 class HomeActivity : AppCompatActivity() {
 
@@ -75,6 +80,29 @@ class HomeActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        val foodNames = resources.getStringArray(R.array.food_name).toList()
+        val foodDescriptions = resources.getStringArray(R.array.food_description).toList()
+        val foodImages = listOf(
+            R.drawable.chickencurry, R.drawable.chickenwings, R.drawable.chocolatecake, R.drawable.donuts, R.drawable.dumplings,
+            R.drawable.frenchfries, R.drawable.friedcalamari, R.drawable.friedrice, R.drawable.hamburger, R.drawable.icecream,
+            R.drawable.padthai, R.drawable.pancakes, R.drawable.pizza, R.drawable.ramen, R.drawable.spaghettibolognese,
+            R.drawable.springrolls, R.drawable.sushi, R.drawable.takoyaki, R.drawable.tiramisu, R.drawable.waffles
+        )
+
+        val recyclerViewFood = findViewById<RecyclerView>(R.id.foodRecyclerView)
+        recyclerViewFood.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewFood.adapter = FoodAdapter(this, foodNames, foodDescriptions, foodImages)
+
+        val exerciseNames = resources.getStringArray(R.array.exercise_name).toList()
+        val exerciseDescriptions = resources.getStringArray(R.array.exercise_description).toList()
+        val exerciseImages = listOf(
+            R.drawable.running, R.drawable.cycling, R.drawable.aerobics, R.drawable.weightlifting
+        )
+
+        val recyclerViewExercise = findViewById<RecyclerView>(R.id.exerciseRecyclerView)
+        recyclerViewExercise.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewExercise.adapter = ExerciseAdapter(this, exerciseNames, exerciseDescriptions, exerciseImages)
     }
 
 

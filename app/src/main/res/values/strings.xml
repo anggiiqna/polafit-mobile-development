@@ -29,4 +29,94 @@
         <item>Wanita</item>
     </string-array>
 
+    <string-array name="exercise_name">
+        <item>Running</item>
+        <item>Cycling</item>
+        <item>Aerobics</item>
+        <item>Weightlifting</item>
+    </string-array>
+
+    <string-array name="exercise_description">
+        <item>A simple and effective exercise that improves cardiovascular health. Whether for leisure or training, it helps build endurance and strength.</item>
+        <item>An excellent low-impact exercise that strengthens leg muscles and improves heart health. Its a fun and eco-friendly way to stay active and explore the outdoors.</item>
+        <item>A high-energy workout that combines rhythmic movements with music. It’s great for improving stamina, flexibility, and overall fitness.</item>
+        <item>A strength-training exercise that builds muscle mass and increases bone density. Ideal for improving strength, power, and metabolism.</item>
+    </string-array>
+
+    <string-array name="exercise_image">
+        <item>@drawable/running</item>
+        <item>@drawable/cycling</item>
+        <item>@drawable/aerobics</item>
+        <item>@drawable/weightlifting</item>
+    </string-array>
+
+    <string-array name="food_name">
+        <item>Chicken Curry</item>
+        <item>Chicken Wings</item>
+        <item>Chocolate Cake</item>
+        <item>Donuts</item>
+        <item>Dumplings</item>
+        <item>French Fries</item>
+        <item>Fried Calamari</item>
+        <item>Fried Rice</item>
+        <item>Hamburger</item>
+        <item>Ice Cream</item>
+        <item>Pad Thai</item>
+        <item>Pancakes</item>
+        <item>Pizza</item>
+        <item>Ramen</item>
+        <item>Spaghetti Bolognese</item>
+        <item>Spring Rolls</item>
+        <item>Sushi</item>
+        <item>Takoyaki</item>
+        <item>Tiramisu</item>
+        <item>Waffles</item>
+    </string-array>
+
+    <string-array name="food_description">
+        <item>Chicken in a rich and aromatic curry sauce. The spicy and savory flavor makes it a warming and satisfying dish.</item>
+        <item>Flavorful chicken wings, fried to crispy perfection. Ideal for sharing with friends or family.</item>
+        <item>A rich chocolate cake that melts in your mouth. Enjoy the sweet and soft texture with every bite.</item>
+        <item>Soft donuts coated in sugar or chocolate. A light snack or breakfast treat thats sweet and indulgent.</item>
+        <item>Soft dumplings filled with meat or vegetables. Served with a dipping sauce that enhances the deliciousness.</item>
+        <item>Crispy golden fries, a timeless snack that never disappoints. Perfect for adding crunch and satisfaction to any meal.</item>
+        <item>Crispy fried squid rings, perfect as an appetizer. Served with tartar sauce for an extra burst of freshness.</item>
+        <item>A delicious fried rice with a signature seasoning that delights the taste buds. Perfect for a quick and flavorful meal at any time.</item>
+        <item>A sandwich with a beef patty, fresh vegetables, and savory sauce. A classic meal thats loved by everyone.</item>
+        <item>Sweet ice cream available in a variety of flavors. The perfect dessert to refresh and satisfy your sweet cravings.</item>
+        <item>Stir-fried Thai noodles with a balanced mix of sour, sweet, and spicy flavors. A taste of exotic cuisine in every bite.</item>
+        <item>Fluffy pancakes topped with sweet syrup. Enjoy a delightful and sweet breakfast thats both comforting and refreshing.</item>
+        <item>A thin crust topped with tomato sauce, cheese, and various toppings. Each bite is full of rich and comforting flavors.</item>
+        <item>Japanese noodles in a rich, flavorful broth, topped with various ingredients. A warm and hearty meal thats perfect for any time.</item>
+        <item>Spaghetti served with a rich meat sauce. Perfect for a satisfying lunch or dinner.</item>
+        <item>Fresh spring rolls filled with vegetables or meat. A light and tasty snack thats healthy and refreshing.</item>
+        <item>Sticky rice with a variety of fresh fish options. Served with nori and wasabi for an authentic taste.</item>
+        <item>Japanese octopus-filled dough balls with takoyaki sauce. Enjoy the soft and savory taste with every bite.</item>
+        <item>An Italian dessert with soft layers of coffee and mascarpone. Each bite offers a deliciously tempting combination of flavors.</item>
+        <item>Crispy waffles with various topping options, perfect for breakfast or a snack. Each bite delivers rich and satisfying flavor.</item>
+    </string-array>
+
+    <string-array name="food_image">
+        <item>@drawable/chickencurry</item>
+        <item>@drawable/chickenwings</item>
+        <item>@drawable/chocolatecake</item>
+        <item>@drawable/donuts</item>
+        <item>@drawable/dumplings</item>
+        <item>@drawable/frenchfries</item>
+        <item>@drawable/friedcalamari</item>
+        <item>@drawable/friedrice</item>
+        <item>@drawable/hamburger</item>
+        <item>@drawable/icecream</item>
+        <item>@drawable/padthai</item>
+        <item>@drawable/pancakes</item>
+        <item>@drawable/pizza</item>
+        <item>@drawable/ramen</item>
+        <item>@drawable/spaghettibolognese</item>
+        <item>@drawable/springrolls</item>
+        <item>@drawable/sushi</item>
+        <item>@drawable/takoyaki</item>
+        <item>@drawable/tiramisu</item>
+        <item>@drawable/waffles</item>
+    </string-array>
+
 </resources>

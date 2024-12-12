@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Data"
+            android:text="Fill Data"
             android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -186,7 +186,7 @@
                 android:layout_marginTop="30dp"
                 android:background="@drawable/rounded_blue2_button"
                 android:gravity="center"
-                android:text="Save"
+                android:text="Submit"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF" />
         </LinearLayout>

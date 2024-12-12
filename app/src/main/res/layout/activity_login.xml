@@ -64,7 +64,8 @@
         android:layout_centerHorizontal="true"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:background="@drawable/edittext_background"/>
+        android:background="@drawable/edittext_background"
+        android:inputType="textPassword" />
 
     <!-- Log In Button -->
     <Button

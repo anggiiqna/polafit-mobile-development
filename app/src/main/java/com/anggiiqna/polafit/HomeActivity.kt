@@ -55,7 +55,6 @@ class HomeActivity : AppCompatActivity() {
             namaUser.text = "User not found"
         }
 
-        // Bottom Navigation Listener
         val bottomNavigationView: BottomNavigationView = homeBinding.bottomNavigation
         bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {

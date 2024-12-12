@@ -2,10 +2,12 @@ package com.anggiiqna.polafit.features.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.anggiiqna.polafit.HomeActivity
+import com.anggiiqna.polafit.MainActivity
 import com.anggiiqna.polafit.databinding.ActivityLoginBinding
 import com.anggiiqna.polafit.network.ApiClient
 import com.anggiiqna.polafit.network.ApiService
@@ -45,8 +47,13 @@ class LoginActivity : AppCompatActivity() {
                     )
                 )
                 appPreferences.saveToken(response.token)
+
                 val id = response.user.id
+                val token = response.token
+
+                Log.d("LoginActivity", "Token saved: $token")
                 goToHome(id)
+                isToken(token)
                 Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
             } catch (ex: Exception) {
                 Toast.makeText(this@LoginActivity, "Login error: ${ex.message}", Toast.LENGTH_SHORT)
@@ -60,5 +67,10 @@ class LoginActivity : AppCompatActivity() {
         intent.putExtra("id", id)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+    }
+
+    private fun isToken(token: String){
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("token", token)
     }
 }

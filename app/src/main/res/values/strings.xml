@@ -5,4 +5,28 @@
     <string name="password">Password</string>
     <string name="enter_your_password_here">Enter your password here!</string>
     <string name="log_in">Log In</string>
+
+    <string-array name="tingkat_aktivitas_options">
+        <item>Rendah</item>
+        <item>Sedang</item>
+        <item>Tinggi</item>
+    </string-array>
+
+    <string-array name="tujuan_options">
+        <item>Pemiliharaan Kebugaran</item>
+        <item>Peningkatan Massa Otot</item>
+        <item>Penurunan Berat Badan</item>
+    </string-array>
+
+    <string-array name="kategori_options">
+        <item>Fleksibilitas</item>
+        <item>Kardio</item>
+        <item>Kekuatan</item>
+    </string-array>
+
+    <string-array name="jenis_kelamin_options">
+        <item>Pria</item>
+        <item>Wanita</item>
+    </string-array>
+
 </resources>

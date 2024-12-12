@@ -9,15 +9,18 @@ class AppPreferences(private val context: Context) {
     private val edit: SharedPreferences.Editor = pref.edit()
 
     fun saveToken(token: String) {
-        edit.putString("token", token)
-        edit.apply()
+        pref.edit().putString("token", token).apply()
     }
 
-    fun getUserId(id: String): String {
-        return pref.getString("id", "") ?: ""
+    fun clearToken() {
+        pref.edit().remove("token").apply()
     }
 
-    fun getToken(): String {
-        return pref.getString("token", "") ?: ""
+    fun getToken(): String? {
+        return pref.getString("token", null)
+    }
+
+    fun isTokenAvailable(): Boolean {
+        return !getToken().isNullOrBlank()
     }
 }

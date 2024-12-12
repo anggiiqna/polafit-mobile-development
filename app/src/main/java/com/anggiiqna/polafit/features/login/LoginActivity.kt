@@ -1,5 +1,6 @@
 package com.anggiiqna.polafit.features.login
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -38,6 +39,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginWithUsername(username: String, password: String) {
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("Uploading image...")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
         lifecycleScope.launch {
             try {
                 val response = apiService.login(
@@ -52,10 +57,13 @@ class LoginActivity : AppCompatActivity() {
                 val token = response.token
 
                 Log.d("LoginActivity", "Token saved: $token")
+                progressDialog.dismiss()
                 goToHome(id)
                 isToken(token)
+
                 Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
             } catch (ex: Exception) {
+                progressDialog.dismiss()
                 Toast.makeText(this@LoginActivity, "Login error: ${ex.message}", Toast.LENGTH_SHORT)
                     .show()
             }

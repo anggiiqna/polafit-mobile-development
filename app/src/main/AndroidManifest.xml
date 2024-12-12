@@ -45,6 +45,7 @@
             android:name=".features.inputdata.InputActivity" />
         <activity
             android:name=".features.scan.ScanActivity" />
+
         <activity
             android:name=".HomeActivity"
             android:exported="false" />

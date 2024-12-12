@@ -1,5 +1,6 @@
 package com.anggiiqna.polafit.features.inputdata
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -97,13 +98,22 @@ class InputActivity : AppCompatActivity() {
         }
     }
 
+
+
     private fun sendExerciseRecommendationRequest(request: ExerciseRequest) {
+        // Show loading indicator before API call
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("Uploading image...")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
         lifecycleScope.launch {
             try {
                 val response = apiService.getExerciseRecommendation(request)
                 val recomendation = response.recommendations
+                progressDialog.dismiss()
                 goToResult(recomendation)
             } catch (ex: Exception) {
+                progressDialog.dismiss()
                 Toast.makeText(this@InputActivity, "Error: ${ex.message}", Toast.LENGTH_LONG).show()
             }
         }

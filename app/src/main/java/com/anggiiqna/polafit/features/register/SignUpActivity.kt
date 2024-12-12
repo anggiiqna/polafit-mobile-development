@@ -1,5 +1,6 @@
 package com.anggiiqna.polafit.features.register
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -44,13 +45,19 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private suspend fun registerUser(name: String, email: String, password: String) {
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("Uploading image...")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
         try {
             val user = RegisterRequest(username = name, email = email, password = password)
             val response = apiService.register(user)
             appPreferences.saveToken(response.token)
+            progressDialog.dismiss()
             goToLogin()
             Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
+            progressDialog.dismiss()
             Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }

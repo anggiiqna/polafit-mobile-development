@@ -45,6 +45,7 @@
         android:hint="Enter your username here!"
         android:textColorHint="#AAAAAA"
         android:layout_below="@id/tv_username"
+        android:textColor="@color/black"
         android:layout_marginTop="8dp"
         android:textSize="14sp"
         android:layout_centerHorizontal="true"
@@ -64,6 +65,7 @@
         android:layout_marginTop="13dp"
         android:text="Email"
         android:textColor="#FFFFFF"
+
         android:textSize="14sp" />
 
     <EditText
@@ -71,6 +73,7 @@
         android:layout_width="310dp"
         android:layout_height="60dp"
         android:hint="Enter your email here!"
+        android:textColor="@color/black"
         android:textColorHint="#AAAAAA"
         android:layout_below="@id/tv_email"
         android:layout_marginTop="8dp"
@@ -91,6 +94,7 @@
         android:layout_below="@id/et_email"
         android:layout_marginStart="60dp"
         android:layout_marginTop="13dp"
+
         android:text="Password"
         android:textColor="#FFFFFF"
         android:textSize="14sp" />
@@ -106,6 +110,7 @@
         android:textSize="14sp"
         android:layout_centerHorizontal="true"
         android:paddingStart="16dp"
+        android:textColor="@color/black"
         android:paddingEnd="16dp"
         android:background="@drawable/edittext_background"
         android:inputType="textPassword" />

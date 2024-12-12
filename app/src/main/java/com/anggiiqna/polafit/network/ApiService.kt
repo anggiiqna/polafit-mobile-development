@@ -6,11 +6,8 @@ import com.anggiiqna.polafit.network.datamodel.RegisterRequest
 import com.anggiiqna.polafit.network.datamodel.RegisterResponse
 import com.anggiiqna.polafit.network.datamodel.UserRequest
 import com.anggiiqna.polafit.network.datamodel.UserResponse
-import com.anggiiqna.polafit.network.datamodel.ExerciseRequest
-import com.anggiiqna.polafit.network.datamodel.ExerciseResponse
 import retrofit2.http.Path
 import retrofit2.http.Part
-import retrofit2.Call
 import retrofit2.http.Multipart
 import okhttp3.MultipartBody
 import retrofit2.http.Body
@@ -46,7 +43,4 @@ interface ApiService {
         @Part email: MultipartBody.Part,
         @Part phone: MultipartBody.Part,
     ): UserRequest
-
-    @POST("/predict_exercise")
-    suspend fun getExerciseRecommendation(@Body request: ExerciseRequest): ExerciseResponse
 }

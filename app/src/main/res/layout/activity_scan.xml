@@ -34,35 +34,39 @@
     </RelativeLayout>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="285dp"
         android:layout_marginStart="0dp"
-        android:layout_height="500dp"
+        android:layout_height="455dp"
         app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
+        app:cardElevation="9dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp">
 
         <ImageView
             android:id="@+id/food_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="285dp"
+            android:layout_height="455dp"
+            android:layout_centerInParent="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/food" />
+            android:src="@drawable/scanfood"
+            android:layout_margin="0dp" />
     </androidx.cardview.widget.CardView>
 
     <!-- Horizontal Layout for Buttons -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:layout_marginTop="610dp"
         android:orientation="horizontal">
 
         <!-- Button to Open File -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="60dp"
+            android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageButton
@@ -71,7 +75,8 @@
                 android:layout_height="64dp"
                 android:contentDescription="Open File"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_folder" />
+                android:src="@drawable/ic_folder"
+                android:background="@android:color/transparent" />
 
             <TextView
                 android:id="@+id/tv_open_file"
@@ -84,10 +89,39 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
+        <!-- Detect Button -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnDetect"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:contentDescription="Center Button"
+                android:background="@drawable/circle_button"
+                android:scaleType="centerInside" />
+
+            <TextView
+                android:id="@+id/tv_detect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                android:text="Detect"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+        </LinearLayout>
+
         <!-- Button to Take Picture -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageButton
@@ -96,7 +130,8 @@
                 android:layout_height="64dp"
                 android:contentDescription="Take Picture"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_camera" />
+                android:src="@drawable/ic_camera"
+                android:background="@android:color/transparent" />
 
             <TextView
                 android:id="@+id/tv_take_picture"

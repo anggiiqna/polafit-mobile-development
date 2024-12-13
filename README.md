@@ -10,7 +10,7 @@ PolaFit is an app designed to address the challenges of achieving a sustainable 
 
 
 ## Demo Video
-[Demo Video Link](https://drive.google.com/file/d/1A2B3C4D5E6F7G8H9I/view)
+[Demo Video Link](https://youtu.be/5oT3GBLua90?si=Eu4KmhpOljrnOwHg)
 
 
 

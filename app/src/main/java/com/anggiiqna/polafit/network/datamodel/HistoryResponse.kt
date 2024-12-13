@@ -23,5 +23,8 @@ class HistoryResponse (
     @SerializedName("image")
     val image: String,
     @SerializedName("createdAt")
-    val createdAt: String
+    val createdAt: String,
+    @SerializedName("message")
+    val message: String,
+    val isSuccessful: Boolean
 )

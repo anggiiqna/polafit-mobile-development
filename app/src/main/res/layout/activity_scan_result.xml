@@ -29,6 +29,15 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="380dp"
+        android:visibility="gone"
+        android:indeterminate="true" />
+
     <androidx.cardview.widget.CardView
         android:layout_width="300dp"
         android:layout_height="180dp"
@@ -44,7 +53,6 @@
             android:scaleType="centerCrop"
             android:src="@drawable/food" />
     </androidx.cardview.widget.CardView>
-
 
 
     <TextView

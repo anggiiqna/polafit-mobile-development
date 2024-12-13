@@ -22,9 +22,11 @@ class HistoryFoodActivity : AppCompatActivity() {
         val imageResource = intent.getStringExtra("FOOD_IMAGE")
         val backButton: ImageView = findViewById(R.id.icon_back)
 
+        val id = intent.getStringExtra("id")
+
         backButton.setOnClickListener {
             val intent = Intent(this@HistoryFoodActivity, HistoryActivity::class.java)
-            startActivity(intent)
+            intent.putExtra("id", id)
             finish()
         }
 

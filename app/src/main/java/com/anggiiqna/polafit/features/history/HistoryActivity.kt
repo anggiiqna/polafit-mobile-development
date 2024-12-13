@@ -1,5 +1,6 @@
 package com.anggiiqna.polafit.features.history
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
@@ -21,6 +22,7 @@ import java.util.Locale
 class HistoryActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: FoodHistoryAdapter
+    private lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,22 +32,27 @@ class HistoryActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val backButton: ImageView = findViewById(R.id.icon_back)
+        val id = intent.getStringExtra("id").toString()
 
         backButton.setOnClickListener {
             val intent = Intent(this@HistoryActivity, ViewProfile::class.java)
+            intent.putExtra("id", id)
             startActivity(intent)
             finish()
         }
 
-        val userId = 3
+        progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("Memuat data...")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
 
-        fetchFoodHistory(userId)
+        fetchFoodHistory(id)
     }
 
-    private fun fetchFoodHistory(userId: Int) {
+    private fun fetchFoodHistory(userId: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = ApiClient.create().getHistoryByUserId(userId.toString())
+                val response = ApiClient.create().getHistoryByUserId(userId.toInt())
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val outputDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 
@@ -81,6 +88,10 @@ class HistoryActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+            } finally {
+                withContext(Dispatchers.Main) {
+                    progressDialog.dismiss()
+                }
             }
         }
     }

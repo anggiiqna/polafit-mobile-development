@@ -56,6 +56,7 @@ class ViewProfile : AppCompatActivity() {
         val backButton: ImageView = findViewById(R.id.icon_back)
         backButton.setOnClickListener {
             val intent = Intent(this@ViewProfile, HomeActivity::class.java)
+            intent.putExtra("id", userId)
             startActivity(intent)
             finish()
         }

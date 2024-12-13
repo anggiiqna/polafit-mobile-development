@@ -7,3 +7,20 @@ PolaFit is an app designed to address the challenges of achieving a sustainable 
    ```bash
    git clone https://github.com/PolaFit/polafit-mobile-development.git
    cd polafit-mobile-development
+
+
+## Demo Video
+[Demo Video Link](https://drive.google.com/file/d/1A2B3C4D5E6F7G8H9I/view)
+
+## Configuration ⚙️
+
+## Build variants 🏗️
+Use the Android Studio *Build Variants* button to choose between debug and release build types
+
+## Generating signed APK 📱
+From Android Studio:
+1. ***Build*** menu
+2. ***Generate Signed APK...***
+3. Fill in the keystore information *(you only need to do this once manually and then let Android Studio remember it)*
+
+

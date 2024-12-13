@@ -76,6 +76,7 @@ class ScanResultActivity : AppCompatActivity() {
 
 //            val progressDialog = ProgressDialog(this)
 //            progressDialog.setMessage("Saving History...")
+
 //            progressDialog.setCancelable(false)
 //            progressDialog.show()
 
@@ -89,9 +90,10 @@ class ScanResultActivity : AppCompatActivity() {
             val sugarPart = RequestBody.create(MultipartBody.FORM, sugarValue ?: "")
 
             val imageUri = Uri.parse(imageUriString)
-            val imageFile = imageUri?.let {
-                getFileFromUri(it)
-            }
+            val imageFile = imageUri?.let { uri ->
+                getFileFromUri(uri)
+            } ?: return@setOnClickListener
+
             val imagePart = imageFile?.let {
                 val requestBody = it.asRequestBody("image/*".toMediaTypeOrNull())
                 MultipartBody.Part.createFormData("image", it.name, requestBody)
@@ -105,16 +107,24 @@ class ScanResultActivity : AppCompatActivity() {
         }
     }
 
+//    Take 3
     private fun getFileFromUri(uri: Uri): File? {
-        val inputStream: InputStream? = contentResolver.openInputStream(uri)
-        val file = File(filesDir, uri.lastPathSegment ?: "temp_image")
-        inputStream?.use { input ->
-            file.outputStream().use { output ->
-                input.copyTo(output)
+        return when (uri.scheme) {
+            "content" -> {
+                val inputStream = contentResolver.openInputStream(uri)
+                val file = File(cacheDir, "temp_image_${System.currentTimeMillis()}.jpg")
+                inputStream?.use { input ->
+                    file.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+                file.takeIf { it.exists() }
             }
+            "file" -> File(uri.path)
+            else -> null
         }
-        return file.takeIf { it.exists() }
     }
+
 
     private fun sendFoodHistory(
         userId: String,

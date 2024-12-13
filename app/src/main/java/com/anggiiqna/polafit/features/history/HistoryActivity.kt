@@ -37,11 +37,15 @@ class HistoryActivity : AppCompatActivity() {
             finish()
         }
 
-        val userId = 3
-
-        fetchFoodHistory(userId)
+        val userId = intent.getStringExtra("id") ?: "3"
+        fetchFoodHistory(userId.toInt())
     }
 
+    override fun onResume() {
+        super.onResume()
+        val userId = intent.getStringExtra("id") ?: "3"
+        fetchFoodHistory(userId.toInt())
+    }
     private fun fetchFoodHistory(userId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             try {

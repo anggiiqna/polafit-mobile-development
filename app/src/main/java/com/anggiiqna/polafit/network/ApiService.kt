@@ -75,5 +75,5 @@ interface ApiService {
     ): HistoryResponse
 
     @GET("food-history/{id}")
-    suspend fun getHistoryByUserId(@Path("id") userId: String): List<HistoryResponse>
+    suspend fun getHistoryByUserId(@Path("id") userId:Int): List<HistoryResponse>
 }

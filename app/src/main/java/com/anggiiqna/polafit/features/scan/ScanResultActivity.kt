@@ -5,9 +5,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.anggiiqna.polafit.R
@@ -40,9 +43,13 @@ class ScanResultActivity : AppCompatActivity() {
         val foodImageView: ImageView = findViewById(R.id.food_image)
         val backButton: ImageView = findViewById(R.id.icon_back)
         val saveButton: Button = findViewById(R.id.btnResult)
+        val progressBar: ProgressBar = findViewById(R.id.progress_bar)
+
+        val id = intent.getStringExtra("id")
 
         backButton.setOnClickListener {
             val intent = Intent(this@ScanResultActivity, HistoryActivity::class.java)
+            intent.putExtra("id", id)
             startActivity(intent)
             finish()
         }
@@ -72,13 +79,7 @@ class ScanResultActivity : AppCompatActivity() {
         }
 
         saveButton.setOnClickListener {
-            val userId = intent.getStringExtra("id") ?: ""
-
-//            val progressDialog = ProgressDialog(this)
-//            progressDialog.setMessage("Saving History...")
-//            progressDialog.setCancelable(false)
-//            progressDialog.show()
-
+            val userId = id
             val foodNamePart = RequestBody.create(MultipartBody.FORM, foodName ?: "")
             val servingPart = RequestBody.create(MultipartBody.FORM, servingSizeValue ?: "")
             val caloriesPart = RequestBody.create(MultipartBody.FORM, caloriesValue ?: "")
@@ -97,11 +98,18 @@ class ScanResultActivity : AppCompatActivity() {
                 MultipartBody.Part.createFormData("image", it.name, requestBody)
             }
 
-            sendFoodHistory(userId, foodNamePart, servingPart, caloriesPart, proteinPart, fatPart, carboPart, fiberPart, sugarPart, imagePart)
-//            progressDialog.dismiss()
-//            val intent = Intent(this@ScanResultActivity, HistoryActivity::class.java)
-//            startActivity(intent)
-//            finish()
+            sendFoodHistory(
+                userId.toString(), foodNamePart, servingPart, caloriesPart,
+                proteinPart, fatPart, carboPart, fiberPart, sugarPart, imagePart
+            )
+
+            lifecycleScope.launch {
+                try {
+                    Toast.makeText(this@ScanResultActivity, "History saved..", Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    Log.e("ScanResultActivity", "Error while sending data: ${e.message}")
+                }
+            }
         }
     }
 

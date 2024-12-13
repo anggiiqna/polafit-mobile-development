@@ -58,8 +58,11 @@ class ScanActivity : AppCompatActivity() {
         val btnOpenFile: ImageButton = findViewById(R.id.btnOpenFile)
         val backButton: ImageView = findViewById(R.id.icon_back)
 
+        val id = intent.getStringExtra("id")
+
         backButton.setOnClickListener {
             val intent = Intent(this@ScanActivity, HomeActivity::class.java)
+            intent.putExtra("id", id)
             startActivity(intent)
             finish()
         }

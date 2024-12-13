@@ -8,7 +8,7 @@
     <item
         android:id="@+id/nav_input"
         android:icon="@drawable/baseline_assignment_ind_24"
-        android:title="Fill Data" />
+        android:title="Exercise" />
 
     <item
         android:id="@+id/nav_scan"

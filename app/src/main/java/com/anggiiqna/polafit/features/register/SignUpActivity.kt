@@ -3,9 +3,11 @@ package com.anggiiqna.polafit.features.register
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.anggiiqna.polafit.R
 import com.anggiiqna.polafit.features.login.LoginActivity
 import com.anggiiqna.polafit.databinding.ActivitySignupBinding
 import com.anggiiqna.polafit.network.ApiClient
@@ -19,6 +21,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
     private lateinit var apiService: ApiService
     private lateinit var appPreferences: AppPreferences
+    private lateinit var LogInText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +44,13 @@ class SignUpActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             }
+        }
+        LogInText = findViewById(R.id.tv_login_prompt)
+
+        LogInText.setOnClickListener {
+            val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 

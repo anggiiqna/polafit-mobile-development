@@ -12,7 +12,7 @@ PolaFit is an app designed to address the challenges of achieving a sustainable 
 ## Demo Video
 [Demo Video Link](https://drive.google.com/file/d/1A2B3C4D5E6F7G8H9I/view)
 
-## Configuration ⚙️
+
 
 ## Build variants 🏗️
 Use the Android Studio *Build Variants* button to choose between debug and release build types
